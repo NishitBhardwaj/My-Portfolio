@@ -87,9 +87,6 @@ export default function MapPage() {
             >
                 <Controls
                     className="!bg-cosmic-dark/80 !border-neon-cyan/30"
-                    style={{
-                        button: { backgroundColor: "#0a0a0f", color: "#23f3ff", borderColor: "#23f3ff" }
-                    }}
                 />
                 <Background color="#23f3ff" gap={50} size={1} style={{ opacity: 0.1 }} />
             </ReactFlow>
