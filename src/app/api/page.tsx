@@ -12,7 +12,7 @@ export default function ApiDocsPage() {
     const [activeSection, setActiveSection] = useState("overview");
     const [activeEndpoint, setActiveEndpoint] = useState<ApiEndpoint | null>(null);
     const [isLoading, setIsLoading] = useState(false);
-    const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
+    const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
 
     const handleSectionClick = useCallback((id: string) => {
         setActiveSection(id);
