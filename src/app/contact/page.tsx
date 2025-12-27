@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, FormEvent, Suspense } from "react";
+import { useState, FormEvent, Suspense, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -223,23 +223,35 @@ function ContactForm() {
 }
 
 export default function ContactPage() {
+    const [stars, setStars] = useState<{ left: string; top: string; duration: number; delay: number }[]>([]);
+
+    useEffect(() => {
+        const newStars = Array.from({ length: 80 }).map(() => ({
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            duration: 2 + Math.random() * 2,
+            delay: Math.random() * 2,
+        }));
+        setStars(newStars);
+    }, []);
+
     return (
         <div className="min-h-screen bg-cosmic-dark flex items-center justify-center p-6 overflow-hidden">
             {/* Background stars */}
             <div className="fixed inset-0 pointer-events-none">
-                {[...Array(80)].map((_, i) => (
+                {stars.map((star, i) => (
                     <motion.div
                         key={i}
                         className="absolute w-1 h-1 rounded-full bg-white/30"
                         style={{
-                            left: `${Math.random() * 100}%`,
-                            top: `${Math.random() * 100}%`,
+                            left: star.left,
+                            top: star.top,
                         }}
                         animate={{ opacity: [0.3, 1, 0.3] }}
                         transition={{
-                            duration: 2 + Math.random() * 2,
+                            duration: star.duration,
                             repeat: Infinity,
-                            delay: Math.random() * 2,
+                            delay: star.delay,
                         }}
                     />
                 ))}

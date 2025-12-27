@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import ReactFlow, {
     Controls,
     Background,
@@ -19,6 +19,19 @@ export default function MapPage() {
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     const [selectedNode, setSelectedNode] = useState<string | null>(null);
+    const [stars, setStars] = useState<{ left: string; top: string; duration: number; delay: number; width: string; height: string }[]>([]);
+
+    useEffect(() => {
+        const newStars = Array.from({ length: 100 }).map(() => ({
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            duration: 2 + Math.random() * 3,
+            delay: Math.random() * 2,
+            width: `${Math.random() * 2 + 1}px`,
+            height: `${Math.random() * 2 + 1}px`,
+        }));
+        setStars(newStars);
+    }, []);
 
     const onNodeClick = useCallback((_: React.MouseEvent, node: Node) => {
         setSelectedNode(node.id);
@@ -38,23 +51,23 @@ export default function MapPage() {
                 }}
             >
                 {/* Star field */}
-                {Array.from({ length: 100 }).map((_, i) => (
+                {stars.map((star, i) => (
                     <motion.div
                         key={i}
                         animate={{
                             opacity: [0.3, 1, 0.3],
                         }}
                         transition={{
-                            duration: 2 + Math.random() * 3,
+                            duration: star.duration,
                             repeat: Infinity,
-                            delay: Math.random() * 2,
+                            delay: star.delay,
                         }}
                         className="absolute rounded-full bg-white"
                         style={{
-                            width: Math.random() * 2 + 1 + "px",
-                            height: Math.random() * 2 + 1 + "px",
-                            left: Math.random() * 100 + "%",
-                            top: Math.random() * 100 + "%",
+                            width: star.width,
+                            height: star.height,
+                            left: star.left,
+                            top: star.top,
                         }}
                     />
                 ))}
