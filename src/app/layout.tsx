@@ -3,6 +3,7 @@ import "./globals.css";
 import GalaxyBackground from "@/components/GalaxyBackground";
 
 export const metadata: Metadata = {
+    metadataBase: new URL('https://nishitsdevmultiverse.com'),
     title: "Nishit's Dev Multiverse | Software Development Engineer",
     description:
         "Backend Engineering • System Design • AI-Integrated Systems • Interactive Multiverse Portfolio by Nishit Bhardwaj",

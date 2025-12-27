@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function ContactPage() {
+function ContactForm() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const status = searchParams.get("status");
@@ -51,7 +51,6 @@ export default function ContactPage() {
 
         setIsSubmitting(true);
 
-        // FormSubmit integration
         const form = new FormData();
         form.append("name", formData.name);
         form.append("email", formData.email);
@@ -73,27 +72,7 @@ export default function ContactPage() {
     };
 
     return (
-        <div className="min-h-screen bg-cosmic-dark flex items-center justify-center p-6 overflow-hidden">
-            {/* Background stars */}
-            <div className="fixed inset-0 pointer-events-none">
-                {[...Array(80)].map((_, i) => (
-                    <motion.div
-                        key={i}
-                        className="absolute w-1 h-1 rounded-full bg-white/30"
-                        style={{
-                            left: `${Math.random() * 100}%`,
-                            top: `${Math.random() * 100}%`,
-                        }}
-                        animate={{ opacity: [0.3, 1, 0.3] }}
-                        transition={{
-                            duration: 2 + Math.random() * 2,
-                            repeat: Infinity,
-                            delay: Math.random() * 2,
-                        }}
-                    />
-                ))}
-            </div>
-
+        <>
             {/* Success Message */}
             <AnimatePresence>
                 {status === "sent" && (
@@ -223,8 +202,8 @@ export default function ContactPage() {
                             whileHover={isFormValid() && !isSubmitting ? { scale: 1.02 } : {}}
                             whileTap={isFormValid() && !isSubmitting ? { scale: 0.98 } : {}}
                             className={`w-full py-4 rounded-xl font-mono text-sm font-bold transition-all ${isFormValid() && !isSubmitting
-                                    ? "bg-gradient-to-r from-neon-cyan to-neon-violet text-white cursor-pointer"
-                                    : "bg-gray-800 text-gray-500 cursor-not-allowed"
+                                ? "bg-gradient-to-r from-neon-cyan to-neon-violet text-white cursor-pointer"
+                                : "bg-gray-800 text-gray-500 cursor-not-allowed"
                                 }`}
                         >
                             {isSubmitting ? "Transmitting..." : "🚀 Send Transmission"}
@@ -239,6 +218,41 @@ export default function ContactPage() {
                     </div>
                 </div>
             </motion.div>
+        </>
+    );
+}
+
+export default function ContactPage() {
+    return (
+        <div className="min-h-screen bg-cosmic-dark flex items-center justify-center p-6 overflow-hidden">
+            {/* Background stars */}
+            <div className="fixed inset-0 pointer-events-none">
+                {[...Array(80)].map((_, i) => (
+                    <motion.div
+                        key={i}
+                        className="absolute w-1 h-1 rounded-full bg-white/30"
+                        style={{
+                            left: `${Math.random() * 100}%`,
+                            top: `${Math.random() * 100}%`,
+                        }}
+                        animate={{ opacity: [0.3, 1, 0.3] }}
+                        transition={{
+                            duration: 2 + Math.random() * 2,
+                            repeat: Infinity,
+                            delay: Math.random() * 2,
+                        }}
+                    />
+                ))}
+            </div>
+
+            {/* Wrap in Suspense for useSearchParams */}
+            <Suspense fallback={
+                <div className="text-center text-neon-cyan font-mono">
+                    Loading...
+                </div>
+            }>
+                <ContactForm />
+            </Suspense>
         </div>
     );
 }
