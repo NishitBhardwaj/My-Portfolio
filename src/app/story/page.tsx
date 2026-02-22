@@ -12,12 +12,14 @@ import {
 import TechLogosReveal from "@/components/story/TechLogosReveal";
 import CodeSnippetCard from "@/components/story/CodeSnippetCard";
 import SystemArchitecture from "@/components/story/SystemArchitecture";
+import DockerPipeline from "@/components/story/DockerPipeline";
+import AWSArchitecture from "@/components/story/AWSArchitecture";
+import FullStackFlowChart from "@/components/story/FullStackFlowChart";
 import SystemsThinkingDiagram from "@/components/story/SystemsThinkingDiagram";
 import ProjectShowcase from "@/components/story/ProjectShowcase";
 import MultiverseCTA from "@/components/story/MultiverseCTA";
 import ReturnHomeButton from "@/components/story/ReturnHomeButton";
 import StoryAvatarHologram from "@/components/story/StoryAvatarHologram";
-import { USER_INFO } from "@/lib/constants";
 
 // Dynamic import for parallax stars to avoid SSR issues
 const ParallaxStars = dynamic(() => import("@/components/story/ParallaxStars"), {
@@ -54,11 +56,17 @@ export default function StoryPage() {
                         <div className="text-center lg:text-left flex-1">
                             <ChapterTitle>Welcome to my Origin Story</ChapterTitle>
                             <ChapterSubtitle>
-                                How I became a Software Development Engineer
+                                Full Stack Engineer · Backend Architect · Cloud & DevOps
                             </ChapterSubtitle>
                             <ChapterContent className="mt-6">
-                                <p className="text-gray-500 font-mono text-sm">
-                                    Scroll to explore my journey through code, systems, and endless curiosity.
+                                <p className="text-gray-400 font-mono text-sm leading-relaxed max-w-xl">
+                                    I&apos;m Nishit Bhardwaj — a Full Stack Engineer who builds scalable backend
+                                    systems with <span className="text-neon-cyan">Node.js</span>, <span className="text-neon-cyan">FastAPI</span>,
+                                    and <span className="text-neon-cyan">React</span>. I architect microservices
+                                    on <span className="text-neon-violet">AWS</span>, containerize
+                                    with <span className="text-neon-violet">Docker</span>, and automate deployments
+                                    through <span className="text-neon-pink">CI/CD pipelines</span>. From MongoDB &
+                                    Cassandra to Redis & MySQL — I design systems that don&apos;t just work, they scale.
                                 </p>
                                 <motion.div
                                     animate={{ y: [0, 10, 0] }}
@@ -105,86 +113,102 @@ export default function StoryPage() {
                             I evolved into a Backend & System Design Engineer.
                         </ChapterSubtitle>
                         <SystemArchitecture />
+                        <DockerPipeline />
+                        <AWSArchitecture />
+                        <FullStackFlowChart />
                     </div>
                 </Chapter>
 
                 {/* ==================== CHAPTER 3: THE PROFESSIONAL ==================== */}
                 <Chapter>
-                    <div className="max-w-4xl mx-auto">
-                        <FadeInWhenVisible className="text-center mb-12">
+                    <div className="max-w-4xl mx-auto text-center">
+                        <FadeInWhenVisible>
                             <span className="text-neon-violet font-mono text-sm mb-4 block">
                                 CHAPTER 03
                             </span>
                             <ChapterTitle>The Professional</ChapterTitle>
                         </FadeInWhenVisible>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            {/* Left Column - Profile */}
-                            <FadeInWhenVisible delay={0.2}>
-                                <div className="holographic rounded-xl p-6">
-                                    <h3 className="text-xl font-display font-bold text-white mb-4">
-                                        Profile
-                                    </h3>
-                                    <div className="space-y-4">
-                                        <div>
-                                            <span className="text-gray-500 text-sm font-mono">Name</span>
-                                            <p className="text-neon-cyan font-semibold">{USER_INFO.name}</p>
-                                        </div>
-                                        <div>
-                                            <span className="text-gray-500 text-sm font-mono">Role</span>
-                                            <p className="text-white">{USER_INFO.role}</p>
-                                        </div>
-                                        <div>
-                                            <span className="text-gray-500 text-sm font-mono">Location</span>
-                                            <p className="text-gray-300">{USER_INFO.location}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </FadeInWhenVisible>
+                        {/* Animated Text Manifesto */}
+                        <div className="mt-12 space-y-6">
+                            {/* Line 1 */}
+                            <motion.p
+                                className="text-2xl md:text-4xl font-display font-bold leading-relaxed"
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.8, delay: 0.2 }}
+                            >
+                                <span className="text-white">I&apos;m not just an </span>
+                                <motion.span
+                                    className="text-neon-cyan"
+                                    animate={{ textShadow: ["0 0 10px #23f3ff40", "0 0 30px #23f3ff80", "0 0 10px #23f3ff40"] }}
+                                    transition={{ duration: 3, repeat: Infinity }}
+                                >SDE</motion.span>
+                                <span className="text-white"> —</span>
+                            </motion.p>
 
-                            {/* Right Column - Experience */}
-                            <FadeInWhenVisible delay={0.4}>
-                                <div className="holographic rounded-xl p-6">
-                                    <h3 className="text-xl font-display font-bold text-white mb-4">
-                                        Experience
-                                    </h3>
-                                    <div className="space-y-4">
-                                        <div className="flex gap-4">
-                                            <div className="w-12 h-12 rounded-lg holographic flex items-center justify-center text-2xl">
-                                                💼
-                                            </div>
-                                            <div>
-                                                <p className="text-white font-semibold">
-                                                    Optimum Research Solutions
-                                                </p>
-                                                <p className="text-gray-400 text-sm">
-                                                    Software Development Engineer
-                                                </p>
-                                                <p className="text-neon-violet text-xs font-mono mt-1">
-                                                    Building scalable backend systems
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </FadeInWhenVisible>
+                            {/* Line 2 */}
+                            <motion.p
+                                className="text-xl md:text-3xl font-display font-bold leading-relaxed"
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.8, delay: 0.5 }}
+                            >
+                                <span className="text-gray-300">I&apos;m a </span>
+                                <motion.span
+                                    style={{ background: "linear-gradient(90deg, #23f3ff, #9d4edd, #ff00e6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}
+                                    animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
+                                    transition={{ duration: 4, repeat: Infinity }}
+                                >Full Stack Engineer</motion.span>
+                            </motion.p>
+
+                            {/* Line 3 — keyword list */}
+                            <motion.p
+                                className="text-lg md:text-2xl font-mono leading-loose"
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.8, delay: 0.8 }}
+                            >
+                                <span className="text-gray-400">who builds </span>
+                                <motion.span className="text-neon-violet" animate={{ opacity: [0.6, 1, 0.6] }} transition={{ duration: 2, repeat: Infinity }}>CI/CD pipelines</motion.span>
+                                <span className="text-gray-600"> · </span>
+                                <motion.span className="text-[#FF9900]" animate={{ opacity: [0.6, 1, 0.6] }} transition={{ duration: 2, repeat: Infinity, delay: 0.3 }}>deploys on AWS</motion.span>
+                                <span className="text-gray-600"> · </span>
+                                <motion.span className="text-[#2496ED]" animate={{ opacity: [0.6, 1, 0.6] }} transition={{ duration: 2, repeat: Infinity, delay: 0.6 }}>containerizes with Docker</motion.span>
+                            </motion.p>
+
+                            {/* Line 4 */}
+                            <motion.p
+                                className="text-lg md:text-2xl font-mono leading-loose"
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.8, delay: 1.1 }}
+                            >
+                                <motion.span className="text-neon-pink" animate={{ opacity: [0.6, 1, 0.6] }} transition={{ duration: 2, repeat: Infinity, delay: 0.9 }}>architects microservices</motion.span>
+                                <span className="text-gray-600"> · </span>
+                                <motion.span className="text-neon-cyan" animate={{ opacity: [0.6, 1, 0.6] }} transition={{ duration: 2, repeat: Infinity, delay: 1.2 }}>designs cloud systems</motion.span>
+                            </motion.p>
+
+                            {/* Line 5 — closing statement */}
+                            <motion.p
+                                className="text-base md:text-xl font-mono mt-4"
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.8, delay: 1.4 }}
+                            >
+                                <span className="text-gray-500">and turns ideas into </span>
+                                <motion.span
+                                    className="text-white font-bold"
+                                    animate={{ textShadow: ["0 0 5px #ffffff40", "0 0 20px #ffffff80", "0 0 5px #ffffff40"] }}
+                                    transition={{ duration: 3, repeat: Infinity }}
+                                >production-grade, scalable systems.</motion.span>
+                            </motion.p>
                         </div>
-                    </div>
-                </Chapter>
-
-                {/* ==================== CHAPTER 4: SYSTEMS THINKING ==================== */}
-                <Chapter>
-                    <div className="max-w-6xl mx-auto text-center">
-                        <FadeInWhenVisible>
-                            <span className="text-neon-violet font-mono text-sm mb-4 block">
-                                CHAPTER 04
-                            </span>
-                        </FadeInWhenVisible>
-                        <ChapterTitle>Systems Thinking</ChapterTitle>
-                        <ChapterSubtitle className="mx-auto">
-                            Understanding how all the pieces connect to build reliable, scalable systems.
-                        </ChapterSubtitle>
-                        <SystemsThinkingDiagram />
                     </div>
                 </Chapter>
 

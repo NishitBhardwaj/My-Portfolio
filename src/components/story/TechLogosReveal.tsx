@@ -3,11 +3,12 @@
 import { motion } from "framer-motion";
 
 const techLogos = [
-    { name: "HTML", color: "#E34F26", icon: "🌐" },
-    { name: "CSS", color: "#1572B6", icon: "🎨" },
-    { name: "JavaScript", color: "#F7DF1E", icon: "⚡" },
-    { name: "Python", color: "#3776AB", icon: "🐍" },
-    { name: "C++", color: "#00599C", icon: "⚙️" },
+    { name: "React.js", color: "#61DAFB", icon: "⚛️" },
+    { name: "Node.js", color: "#339933", icon: "🟢" },
+    { name: "FastAPI", color: "#009688", icon: "⚡" },
+    { name: "Docker", color: "#2496ED", icon: "🐳" },
+    { name: "AWS", color: "#FF9900", icon: "☁️" },
+    { name: "MongoDB", color: "#47A248", icon: "🍃" },
 ];
 
 export default function TechLogosReveal() {

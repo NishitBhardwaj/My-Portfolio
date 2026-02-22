@@ -28,6 +28,7 @@ export default function Terminal() {
     const [showContact, setShowContact] = useState(false);
     const [isWarping, setIsWarping] = useState(false);
     const [warpDestination, setWarpDestination] = useState("");
+    const [lastContext, setLastContext] = useState<"" | "resume" | "resume-download">("");
 
     const inputRef = useRef<HTMLInputElement>(null);
     const terminalRef = useRef<HTMLDivElement>(null);
@@ -82,9 +83,32 @@ export default function Terminal() {
     };
 
     const handleCommand = (cmd: string) => {
-        const trimmedCmd = cmd.trim().toLowerCase();
+        let trimmedCmd = cmd.trim().toLowerCase();
 
         if (!trimmedCmd) return;
+
+        // Context-aware numeric shortcuts
+        // If user typed 1/2/3 after seeing resume options, remap to the correct command
+        const numericMap: Record<string, Record<string, string>> = {
+            resume: { "1": "resume sd", "2": "resume ml", "3": "resume fs" },
+            "resume-download": { "1": "resume download sd", "2": "resume download ml", "3": "resume download fs" },
+        };
+
+        // Support both bare "1"/"2"/"3" and "resume 1"/"resume 2"/"resume 3"
+        if (lastContext && numericMap[lastContext]?.[trimmedCmd]) {
+            trimmedCmd = numericMap[lastContext][trimmedCmd];
+        } else if (trimmedCmd === "resume 1") {
+            trimmedCmd = "resume sd";
+        } else if (trimmedCmd === "resume 2") {
+            trimmedCmd = "resume ml";
+        } else if (trimmedCmd === "resume 3") {
+            trimmedCmd = "resume fs";
+        }
+
+        // Reset context for non-resume commands
+        if (!trimmedCmd.startsWith("resume")) {
+            setLastContext("");
+        }
 
         // Add to history
         setHistory((prev) => [...prev, trimmedCmd]);
@@ -203,28 +227,81 @@ export default function Terminal() {
                 break;
 
             case "resume":
+            case "resume view":
+                setLastContext("resume");
                 setOutput((prev) => [
                     ...prev,
-                    { type: "response", content: "\n📄 Resume Options:\n" },
-                    { type: "cli", content: "  1. resume view      → View in browser", color: "#23f3ff" },
-                    { type: "cli", content: "  2. resume download  → Download PDF", color: "#9d4edd" },
-                    { type: "cli", content: "  3. resume email     → Email me about it", color: "#888" },
-                    { type: "cli", content: "\n  Type 'resume <option>' to proceed.\n", color: "#666" },
+                    { type: "response", content: "\n📄 Select Resume Type:\n" },
+                    { type: "cli", content: "  1. resume sd   → Software Developer", color: "#23f3ff" },
+                    { type: "cli", content: "  2. resume ml   → Machine Learning Engineer", color: "#9d4edd" },
+                    { type: "cli", content: "  3. resume fs   → Full Stack Developer", color: "#ff00e6" },
+                    { type: "cli", content: "" },
+                    { type: "cli", content: "  Other options:", color: "#888" },
+                    { type: "cli", content: "  resume download  → Download a resume", color: "#888" },
+                    { type: "cli", content: "  resume email     → Email me about it", color: "#888" },
+                    { type: "cli", content: "\n  Type option number (1-3) or full command.\n", color: "#666" },
                 ]);
                 break;
 
-            case "resume view":
-                navigateWithWarp("/resume", "Resume Viewer");
+            case "resume sd":
+                setLastContext("");
+                navigateWithWarp("/resume?type=sd", "Software Developer Resume");
                 break;
 
-            case "resume download": {
-                const link = document.createElement("a");
-                link.href = "/resume.pdf";
-                link.download = "Nishit_Bhardwaj_Resume.pdf";
-                link.click();
+            case "resume ml":
+                setLastContext("");
+                navigateWithWarp("/resume?type=ml", "ML Engineer Resume");
+                break;
+
+            case "resume fs":
+                setLastContext("");
+                navigateWithWarp("/resume?type=fs", "Full Stack Developer Resume");
+                break;
+
+            case "resume download":
+                setLastContext("resume-download");
                 setOutput((prev) => [
                     ...prev,
-                    { type: "response", content: "Downloading resume..." },
+                    { type: "response", content: "\n⬇ Download Resume:\n" },
+                    { type: "cli", content: "  1. resume download sd   → Software Developer", color: "#23f3ff" },
+                    { type: "cli", content: "  2. resume download ml   → ML Engineer", color: "#9d4edd" },
+                    { type: "cli", content: "  3. resume download fs   → Full Stack Developer", color: "#ff00e6" },
+                    { type: "cli", content: "\n  Type option number (1-3) or full command.\n", color: "#666" },
+                ]);
+                break;
+
+            case "resume download sd": {
+                const sdLink = document.createElement("a");
+                sdLink.href = "/resumes/software-developer.pdf";
+                sdLink.download = "Nishit_Bhardwaj_SD_Resume.pdf";
+                sdLink.click();
+                setOutput((prev) => [
+                    ...prev,
+                    { type: "response", content: "Downloading Software Developer resume..." },
+                ]);
+                break;
+            }
+
+            case "resume download ml": {
+                const mlLink = document.createElement("a");
+                mlLink.href = "/resumes/ml-engineer.pdf";
+                mlLink.download = "Nishit_Bhardwaj_ML_Resume.pdf";
+                mlLink.click();
+                setOutput((prev) => [
+                    ...prev,
+                    { type: "response", content: "Downloading ML Engineer resume..." },
+                ]);
+                break;
+            }
+
+            case "resume download fs": {
+                const fsLink = document.createElement("a");
+                fsLink.href = "/resumes/fullstack-developer.pdf";
+                fsLink.download = "Nishit_Bhardwaj_FS_Resume.pdf";
+                fsLink.click();
+                setOutput((prev) => [
+                    ...prev,
+                    { type: "response", content: "Downloading Full Stack Developer resume..." },
                 ]);
                 break;
             }

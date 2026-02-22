@@ -91,7 +91,7 @@ export const TERMINAL_COMMANDS = {
     skills: "Display skills & technologies",
     contact: "Open contact modal",
     github: "Open GitHub profile",
-    resume: "Download resume PDF",
+    resume: "Select & view resume (SD / ML / FS)",
     clear: "Clear terminal screen",
     home: "Return to home terminal",
 };

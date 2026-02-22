@@ -2,14 +2,22 @@
 
 import { motion } from "framer-motion";
 
-const codeSnippet = `// Building systems that scale
-async function handleRequest(req) {
-  const user = await auth.verify(req);
-  const data = await cache.get(key) 
-    || await db.query(user.id);
-  
-  return Response.json(data);
-}`;
+const codeSnippet = `# FastAPI microservice with Docker
+from fastapi import FastAPI, Depends
+from app.auth import verify_token
+from app.cache import redis_cache
+
+app = FastAPI()
+
+@app.get("/api/v1/data/{id}")
+async def get_data(id: str, user=Depends(verify_token)):
+    cached = await redis_cache.get(f"data:{id}")
+    if cached:
+        return {"source": "cache", "data": cached}
+    
+    result = await db.query(id)
+    await redis_cache.set(f"data:{id}", result)
+    return {"source": "db", "data": result}`;
 
 export default function CodeSnippetCard() {
     return (
@@ -33,7 +41,8 @@ export default function CodeSnippetCard() {
                         <div className="w-3 h-3 rounded-full bg-red-500" />
                         <div className="w-3 h-3 rounded-full bg-yellow-500" />
                         <div className="w-3 h-3 rounded-full bg-green-500" />
-                        <span className="ml-2 text-xs text-gray-500 font-mono">system.js</span>
+                        <span className="ml-2 text-xs text-gray-500 font-mono">service.py</span>
+                        <span className="ml-auto text-xs text-gray-600 font-mono">🐳 Docker</span>
                     </div>
 
                     {/* Code */}
@@ -45,15 +54,16 @@ export default function CodeSnippetCard() {
                                     initial={{ opacity: 0, x: -20 }}
                                     whileInView={{ opacity: 1, x: 0 }}
                                     viewport={{ once: true }}
-                                    transition={{ duration: 0.3, delay: 0.5 + i * 0.1 }}
+                                    transition={{ duration: 0.3, delay: 0.5 + i * 0.06 }}
                                     className="whitespace-pre"
                                 >
                                     <span className="text-gray-600 mr-4 select-none">{String(i + 1).padStart(2, " ")}</span>
                                     <span className={
-                                        line.includes("//") ? "text-gray-500" :
-                                            line.includes("async") || line.includes("await") || line.includes("return") ? "text-neon-pink" :
-                                                line.includes("function") || line.includes("const") ? "text-neon-violet" :
-                                                    "text-terminal-text"
+                                        line.includes("#") && !line.includes('f"') ? "text-gray-500" :
+                                            line.includes("async") || line.includes("await") || line.includes("return") || line.includes("if") ? "text-neon-pink" :
+                                                line.includes("from") || line.includes("import") || line.includes("def") || line.includes("app") ? "text-neon-violet" :
+                                                    line.includes("@") ? "text-neon-cyan" :
+                                                        "text-terminal-text"
                                     }>
                                         {line}
                                     </span>
